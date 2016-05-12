@@ -1,24 +1,27 @@
-#include "WPILib.h"
 #include "DriveUnit.h"
-/**
- * This is a demo program showing the use of the RobotDrive class.
- * The SampleRobot class is the base of a robot application that will automatically call your
- * Autonomous and OperatorControl methods at the right time as controlled by the switches on
- * the driver station or the field controls.
- *
- * WARNING: While it may look like a good choice to use for your code if you're inexperienced,
- * don't. Unless you know what you are doing, complex code will be much more difficult under
- * this system. Use IterativeRobot or Command-Based instead if you're new.
- */
-class DriveUnit
-{
-	int DriveUnit::speedSetpoint;
-	int DriveUnit::turnSetpoint;
 
-public:
-	DriveUnit::DriveUnit()
+DriveUnit::DriveUnit(Placement p)
+{
+	placement = p;
+	speedSetpoint =0;
+	turnSetpoint =0;
+	if(p == Placement::Right)
 	{
-		speedSetpoint =0;
+		masterMotor = new CANTalon(0);
+		followerMotor = new CANTalon(0);
 	}
-};
+	else if(p == Placement::Left)
+	{
+		masterMotor = new CANTalon(0);
+		followerMotor = new CANTalon(0);
+	}
+	masterMotor->SetControlMode(CANSpeedController::kPercentVbus);
+	followerMotor->SetControlMode(CANSpeedController::kFollower);
+
+	followerMotor->Set(0);
+
+	masterMotor->ConfigNeutralMode(CANSpeedController::kNeutralMode_Brake);
+	followerMotor->ConfigNeutralMode(CANSpeedController::kNeutralMode_Brake);
+
+}
 
