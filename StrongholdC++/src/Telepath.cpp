@@ -33,13 +33,15 @@ Telepath()
 		buttonstick2 = new Joystick(kDriverStationButtonStick2);
 		buttonstick3 = new Joystick(kDriverStationButtonStick3);
 		analogstick = new Joystick(kDriverStationAnalogStick);
+
 		fan = new Solenoid(kGyroFanAnalogPort);
 		drive = new WestCoastDrive();
 		pusher = new PusherArm();
+		shooter = new Shooter();
 		compressor = new Compressor();
 		compressor->SetClosedLoopControl(true);
 }
-enum ButtonStick3Values {kShooterInfeed,kKick,kShooterDown,kClimberOut,kClimberRelease,kClimberIn,kClimberUp,kClimberDown,kPusherUp,kPusherDown,kShooterUp,	kShooterShoot};
+enum ButtonStick3Values {kShooterInfeed=1,kKick=2,kShooterDown=3,kClimberOut=4,kClimberRelease=5,kClimberIn=6,kClimberUp=7,kClimberDown=8,kPusherUp=9,kPusherDown=10,kShooterUp=11,	kShooterShoot=12};
 
 /**
  * This autonomous (along with the chooser code above) shows how to select between different autonomous modes

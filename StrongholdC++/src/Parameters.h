@@ -37,7 +37,7 @@ using namespace std;
 	static const int kLowGearSolenoidChanel =1;
 	static const int kHighGearSolenoidChanel =0;
 
-	static const double kShooterShootPitchingMachineSpeed = 0.6;
+	static const double kShooterShootPitchingMachineSpeed = 0.9;
 	static const double kShooterShootBatterSpeed =0.65;
 	static const double kShooterTiltMaxVolt = 12*0.6;
 	static const double kShooterReloadPitchingMachineSpeed = -0.8;

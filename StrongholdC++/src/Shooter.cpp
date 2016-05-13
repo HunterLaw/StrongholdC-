@@ -15,7 +15,7 @@ Shooter::Shooter()
 	leftPitchingMotor = new CANTalon(kLeftShooterPitcherMotorCanId);
 	tiltMotor = new CANTalon(kShooterAngleMotorCanId);
 	//TODO: Check motor voltage to direction
-	tiltMotor->ConfigLimitSwitchOverrides(true, false);
+	tiltMotor->ConfigLimitSwitchOverrides(false, true);
 
 	rightPitchingMotor->ConfigNeutralMode(CANTalon::kNeutralMode_Brake);
 	leftPitchingMotor->ConfigNeutralMode(CANTalon::kNeutralMode_Brake);
