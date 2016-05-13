@@ -2,6 +2,7 @@
 #include "Parameters.h"
 #include <cmath>
 #include "WestCoastDrive.h"
+#include "PusherArm.h"
 
 
 /**
@@ -19,6 +20,7 @@ class Telepath: public SampleRobot
 protected:
 	Joystick *leftstick,*rightstick,*buttonstick2,*buttonstick3,*analogstick;
 	WestCoastDrive *drive;
+	PusherArm *pusher;
 	Solenoid *fan;
 	Compressor *compressor;
 public:
@@ -31,9 +33,11 @@ Telepath()
 		analogstick = new Joystick(kDriverStationAnalogStick);
 		fan = new Solenoid(kGyroFanAnalogPort);
 		drive = new WestCoastDrive();
+		pusher = new PusherArm();
 		compressor = new Compressor();
 		compressor->SetClosedLoopControl(true);
 }
+enum ButtonStick3Values {kShooterInfeed,kKick,kShooterDown,kClimberOut,kClimberRelease,kClimberIn,kClimberUp,kClimberDown,kPusherUp,kPusherDown,kShooterUp,	kShooterShoot};
 
 /**
  * This autonomous (along with the chooser code above) shows how to select between different autonomous modes
@@ -57,12 +61,25 @@ void OperatorControl()
 {
 	double leftval = 0;
 	double rightval =0;
+	fan->Set(true);
+	bool isCamMovingManually = true;
 	while (IsOperatorControl() && IsEnabled())
 	{
 		compressor->Start();
-		fan->Set(true);
 		leftval = joystickValue(leftstick->GetY());
 		rightval = joystickValue(rightstick->GetY());
+		if(buttonstick2->GetRawButton(kPusherUp))
+		{
+			pusher->manualSetTilt(kPusherArmMotorPowerUp);
+		}
+		else if(buttonstick2->GetRawButton(kPusherDown))
+		{
+			pusher->manualSetTilt(-kPusherArmHomeMotorPower);
+		}
+		else
+		{
+			pusher->manualSetTilt(0);
+		}
 		if(rightstick->GetRawButton(2))
 		{
 			drive->setGear(WestCoastDrive::Gear::kLowGear);
