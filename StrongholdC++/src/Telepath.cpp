@@ -3,6 +3,7 @@
 #include <cmath>
 #include "WestCoastDrive.h"
 #include "PusherArm.h"
+#include "Shooter.h"
 
 
 /**
@@ -21,6 +22,7 @@ protected:
 	Joystick *leftstick,*rightstick,*buttonstick2,*buttonstick3,*analogstick;
 	WestCoastDrive *drive;
 	PusherArm *pusher;
+	Shooter *shooter;
 	Solenoid *fan;
 	Compressor *compressor;
 public:
@@ -68,6 +70,62 @@ void OperatorControl()
 		compressor->Start();
 		leftval = joystickValue(leftstick->GetY());
 		rightval = joystickValue(rightstick->GetY());
+		if(buttonstick3->GetRawButton(ButtonStick3Values::kShooterShoot) || leftstick->GetRawButton(5))
+		{
+			shooter->manualRunPitchingMachine(kShooterShootPitchingMachineSpeed);
+//        		shooter.shoot2();
+		}
+		else if(buttonstick2->GetRawButton(ButtonStick3Values::kShooterInfeed) || leftstick->GetRawButton(4))
+		{
+			shooter->manualRunPitchingMachine(kShooterReloadPitchingMachineSpeed);
+		}
+		else
+		{
+			shooter->manualRunPitchingMachine(0);
+		}
+		if(buttonstick3->GetRawButton(ButtonStick3Values::kShooterUp) || leftstick->GetRawButton(3))
+		{
+			shooter->manualRunTiltMotor(kShooterTiltPowerUp);
+		}
+		else if(buttonstick2->GetRawButton(ButtonStick3Values::kShooterDown) || leftstick->GetRawButton(2))
+		{
+			shooter->manualRunTiltMotor(kShooterTiltPowerDown);
+		}
+		/*else if (buttonstick3.getRawButton(ButtonStick2Values.kFindTarget.getValue()))
+		{
+			if(isCameraMovingManually)
+			{
+				cam.getImage();
+				cam.centerTarget(gyro.getAngle());
+				turncont.enable();
+			}
+			isCameraMovingManually = false;
+			shooter.setShooterAngle(cam.getCameraAngle());
+			turncont.setSetpoint(cam.getAngleToMoveFromCamera());
+		}
+		else if(buttonstick2.getRawButton(ButtonStick2Values.kGoTo.getValue()))
+		{
+			shooter->setShooterAngle(cam.getCameraAngle());
+		}
+		else if(buttonstick3->GetRawButton(ButtonStick2Values::kSpare) && !turncont.isEnabled())
+		{
+			shooter->setShooterAngle(cam.getCameraAngle());
+			turncont.setSetpoint(cam.getAngleToMoveFromCamera());
+			turncont.enable();
+		}*/
+		else
+		{
+			//isCameraMovingManually = true;
+			shooter->manualRunTiltMotor(0);
+		}
+		if(buttonstick2->GetRawButton(ButtonStick3Values::kKick))
+		{
+			shooter->pushBall(true);
+		}
+		else
+		{
+			shooter->pushBall(false);
+		}
 		if(buttonstick2->GetRawButton(kPusherUp))
 		{
 			pusher->manualSetTilt(kPusherArmMotorPowerUp);

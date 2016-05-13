@@ -1,9 +1,8 @@
-#include "WPILib.h"
-#include <string>
 #ifndef SRC_PARAMETERS_H_
 #define SRC_PARAMETERS_H_
+#include "WPILib.h"
+#include <string>
 
-#endif /* SRC_PARAMETERS_H_ */
 using namespace std;
 	static const int kLeftMasterDriveMotorCanId = 11;
 	static const int kLeftFollowerDriveMotorCanId = 12;
@@ -42,12 +41,18 @@ using namespace std;
 	static const double kShooterShootBatterSpeed =0.65;
 	static const double kShooterTiltMaxVolt = 12*0.6;
 	static const double kShooterReloadPitchingMachineSpeed = -0.8;
+	static const double kShootTiltPositionControlProportional = 0;
+	static const double kShootTiltPositionControlIntegral = 0;
+	static const double kShootTiltPositionControlDifferential = 0.0005;
+	static const double kShootPitchPositionControlProportional = 0;
+	static const double kShootPitchPositionControlIntegral = 0;
+	static const double kShootPitchPositionControlDifferential = 0.00005;
 	static const int kShooterBallShooterSolenoidChanel = 2;
 
 	static const double kMaxVelocity = 20;
 
 	static const double kShooterTiltShootTapePositionEncoderSetpoint = 1.125;
-	static const double kShooterTileShootDefensePositionEncoderSetpoint = 1.6;
+	static const double kShooterTiltShootDefensePositionEncoderSetpoint = 1.6;
 	static const double kShooterTiltShootBatterPositionEncoderSetpoint = 0;
 	static const double kShooterTiltReloadPositionEncoderSetpoint = 0;
 	static const double kShooterTiltLowBarPositionEncoderSetpoint = 3.7;
@@ -122,3 +127,4 @@ using namespace std;
 
 	static const int kFlashDIO = 9;
 
+#endif /* SRC_PARAMETERS_H_ */
