@@ -5,8 +5,6 @@
 
 #endif /* SRC_PARAMETERS_H_ */
 using namespace std;
-class Parameters {
-public:
 	static const int kLeftMasterDriveMotorCanId = 11;
 	static const int kLeftFollowerDriveMotorCanId = 12;
 	static const int kRightMasterDriveMotorCanId = 21;
@@ -23,7 +21,7 @@ public:
 	static const int kClimberRightWinchMotor = 32;
 	static const int kClimberExtendMotorCanId = 44;
 
-	static string kCameraIpAddress = "10.20.28.11";
+	static const string kCameraIpAddress = "10.20.28.11";
 
 	static const int kGyroAnalogPort = 0;
 	static const int kGyroFanAnalogPort = 7;
@@ -92,7 +90,7 @@ public:
 
 	static const double kPusherArmPositionControlProportional = 0.0;
 	static const double kPusherArmPositionControlIntegral = 0.0;
-	static const double kPusherArmPositionControlDifferential = 0.0;
+	static const double kPusherArmPositionControlDifferential = 0.0005;
 	static const double kPusherArmPositionControlThrottle = 0.0;
 	//pusher arm
 	static const double kPusherArmMaxMotorCurrent = 20.0;
@@ -123,4 +121,4 @@ public:
 	static const double kTotalCameraTiltPos = 0.845;
 
 	static const int kFlashDIO = 9;
-};
+

@@ -1,5 +1,9 @@
 #include "WPILib.h"
 #include "Parameters.h"
+#include <cmath>
+#include "WestCoastDrive.h"
+
+
 /**
  * This is a demo program showing the use of the RobotDrive class.
  * The SampleRobot class is the base of a robot application that will automatically call your
@@ -12,56 +16,93 @@
  */
 class Telepath: public SampleRobot
 {
-	Joystick leftstick;
-	Joystick rightstick;
-	Joystick buttonstick2;
-	Joystick buttonstick3;
-	Joystick analogstick;
-	Parameters p;
-
+protected:
+	Joystick *leftstick,*rightstick,*buttonstick2,*buttonstick3,*analogstick;
+	WestCoastDrive *drive;
+	Solenoid *fan;
+	Compressor *compressor;
 public:
-	Telepath()
+Telepath()
+{
+		leftstick = new Joystick(kDriverStationLeftStick);
+		rightstick = new Joystick(kDriverStationRightStick);
+		buttonstick2 = new Joystick(kDriverStationButtonStick2);
+		buttonstick3 = new Joystick(kDriverStationButtonStick3);
+		analogstick = new Joystick(kDriverStationAnalogStick);
+		fan = new Solenoid(kGyroFanAnalogPort);
+		drive = new WestCoastDrive();
+		compressor = new Compressor();
+		compressor->SetClosedLoopControl(true);
+}
+
+/**
+ * This autonomous (along with the chooser code above) shows how to select between different autonomous modes
+ * using the dashboard. The sendable chooser code works with the Java SmartDashboard. If you prefer the LabVIEW
+ * Dashboard, remove all of the chooser code and uncomment the GetString line to get the auto name from the text box
+ * below the Gyro
+ *
+ * You can add additional auto modes by adding additional comparisons to the if-else structure below with additional strings.
+ * If using the SendableChooser make sure to add them to the chooser code above as well.
+ */
+void Autonomous()
+{
+
+
+}
+
+/**
+ * Runs the motors with arcade steering.
+ */
+void OperatorControl()
+{
+	double leftval = 0;
+	double rightval =0;
+	while (IsOperatorControl() && IsEnabled())
 	{
-		leftstick = new Joystick(p.kDriverStationLeftStick);
-		rightstick = new Joystick(p.kDriverStationRightStick);
-		buttonstick2 = new Joystick(p.kDriverStationButtonStick2);
-		buttonstick3 = new Joystick(p.kDriverStationButtonStick3);
-		analogstick = new Joystick(p.kDriverStationAnalogStick);
-
-	}
-
-	/**
-	 * This autonomous (along with the chooser code above) shows how to select between different autonomous modes
-	 * using the dashboard. The sendable chooser code works with the Java SmartDashboard. If you prefer the LabVIEW
-	 * Dashboard, remove all of the chooser code and uncomment the GetString line to get the auto name from the text box
-	 * below the Gyro
-	 *
-	 * You can add additional auto modes by adding additional comparisons to the if-else structure below with additional strings.
-	 * If using the SendableChooser make sure to add them to the chooser code above as well.
-	 */
-	void Autonomous()
-	{
-
-
-	}
-
-	/**
-	 * Runs the motors with arcade steering.
-	 */
-	void OperatorControl()
-	{
-		while (IsOperatorControl() && IsEnabled())
+		compressor->Start();
+		fan->Set(true);
+		leftval = joystickValue(leftstick->GetY());
+		rightval = joystickValue(rightstick->GetY());
+		if(rightstick->GetRawButton(2))
 		{
-			Wait(0.005);				// wait for a motor update time
+			drive->setGear(WestCoastDrive::Gear::kLowGear);
 		}
+		else if(rightstick->GetRawButton(3))
+		{
+			drive->setGear(WestCoastDrive::Gear::kHighGear);
+		}
+		if(leftstick->GetRawButton(11))
+		{
+			drive->setSpeedSetpoint(leftval, leftval);
+		}
+		else
+		{
+			drive->setSpeedSetpoint(leftval, rightval);
+		}
+		drive->process();
+		Wait(0.05);				// wait for a motor update time
 	}
+}
 
-	/**
-	 * Runs during test mode
-	 */
-	void Test()
+/**
+ * Runs during test mode
+ */
+void Test()
+{
+}
+
+double joystickValue(double value)
+{
+	double rc = 0;
+	if(abs(value) < 0.05)
 	{
+		rc = 0;
 	}
+	else
+	{
+		rc = value;
+	}
+	return rc;
+}
 };
-
 START_ROBOT_CLASS(Telepath)

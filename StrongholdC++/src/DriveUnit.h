@@ -13,14 +13,14 @@ class DriveUnit
 public:
 	enum Placement {Left,Right};
 	DriveUnit(Placement p);
-	double getSpeedSetpoint(){return speedSetpoint;}
 	void setSpeedSetpoint(double value);
 	void process();
+	void setSpeedControl(bool speed);
+	void setTurnSetpoint(double value);
+	Placement getPlacement() {return placement;};
 	bool isCurrentThresholdExceeded(){return masterMotor->GetOutputCurrent() >=0;};
 	bool isSpeedControlEnabled() {return masterMotor->GetControlMode() == CANSpeedController::kSpeed;};
-	void setSpeedControl(bool speed);
-	Placement getPlacement() {return placement;};
-	void setTurnSetpoint(double value);
+	double getSpeedSetpoint(){return speedSetpoint;}
 	double getTurnSetpoint(){return turnSetpoint;};
 protected:
 	int speedSetpoint;
